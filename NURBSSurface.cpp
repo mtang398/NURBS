@@ -272,11 +272,11 @@ void NURBSSurface::draw(
 	
 	if(showpolygon){
 		drawControlPolygon(viewer);
-		viewer.core.align_camera_center(controlP[controlP.size()/2]);
+		viewer.core(0).align_camera_center(controlP[controlP.size()/2]);
 	}
 	if(showsurface){
 		drawSurface(viewer,resolution);
-		viewer.core.align_camera_center(mesh_V,mesh_F);
+		viewer.core(0).align_camera_center(mesh_V,mesh_F);
 	}
 
 }

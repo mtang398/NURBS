@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.14)  # FetchContent is available in 3.14+
 project(NURBS)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+include(FetchContent)
 
 # libigl
 option(LIBIGL_WITH_OPENGL            "Use OpenGL"         ON)
@@ -9,8 +9,21 @@ option(LIBIGL_WITH_OPENGL_GLFW       "Use GLFW"           ON)
 option(LIBIGL_WITH_VIEWER            "Use OpenGL viewer"  ON)
 option(LIBIGL_WITH_OPENGL_GLFW_IMGUI "Use ImGui"          ON)
 
-# Add the path to libigl in your project directory
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/libigl)
+# Provide hint for finding BLAS
+set(BLA_VENDOR OpenBLAS)
+find_package(BLAS REQUIRED)
+
+FetchContent_Declare(
+  libigl
+  GIT_REPOSITORY https://github.com/libigl/libigl.git
+  GIT_TAG        v2.3.0  # adjust with the version you want
+)
+
+FetchContent_GetProperties(libigl)
+if(NOT libigl_POPULATED)
+  FetchContent_Populate(libigl)
+  add_subdirectory(${libigl_SOURCE_DIR} ${libigl_BINARY_DIR})
+endif()
 
 # Add your project files
 file(GLOB SRCFILES *.cpp)

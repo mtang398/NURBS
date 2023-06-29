@@ -471,5 +471,5 @@ void NURBSCurve::draw(
 	if(showsurface){
 		drawSurface(viewer, resolution);
 	}
-	viewer.core.align_camera_center(controlP);
+	viewer.core(0).align_camera_center(controlP);
 }
